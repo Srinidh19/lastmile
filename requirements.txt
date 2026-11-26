@@ -7,7 +7,4 @@ streamlit-autorefresh>=1.0.1
 requests>=2.31.0
 pandas>=2.0.0
 pydantic>=2.0.0
-confluent-kafka>=2.4.0
 kafka-python-ng>=2.2.0
-mockafka-py>=0.2.0
-pytest>=8.0.0
