@@ -15,13 +15,13 @@ from services.routing_service import get_road_route as fetch_road_route
 # 1. CONFIGURATION & CLOUD BACKEND RESOLUTION
 # ============================================================
 
-# Resolves backend URL from environment, Streamlit secrets, or defaults to localhost
+# Resolves backend URL from environment, Streamlit secrets, or defaults to live Render backend
 API_URL = os.getenv("API_URL") or os.getenv("BACKEND_URL")
 if not API_URL:
     try:
-        API_URL = st.secrets.get("API_URL", "http://127.0.0.1:8000")
+        API_URL = st.secrets.get("API_URL", "https://lastmile-backend-58fc.onrender.com")
     except Exception:
-        API_URL = "http://127.0.0.1:8000"
+        API_URL = "https://lastmile-backend-58fc.onrender.com"
 API_URL = str(API_URL).rstrip("/")
 
 st.set_page_config(
