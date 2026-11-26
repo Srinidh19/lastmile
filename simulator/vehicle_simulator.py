@@ -9,8 +9,9 @@ from datetime import datetime, timezone
 from services.streaming.producer import producer as kafka_producer
 from services.streaming.config import config as streaming_config
 
-# Backend API endpoints (resolves from environment if deployed to cloud)
-BASE_URL = os.getenv("BASE_URL") or os.getenv("API_URL") or "http://127.0.0.1:8000"
+# Backend API endpoints (resolves from environment or dynamic cloud PORT)
+PORT = os.getenv("PORT", "8000")
+BASE_URL = os.getenv("BASE_URL") or os.getenv("API_URL") or f"http://127.0.0.1:{PORT}"
 BASE_URL = BASE_URL.rstrip("/")
 EVENTS_URL = f"{BASE_URL}/events"
 ORDERS_URL = f"{BASE_URL}/orders/vehicle"
@@ -45,6 +46,7 @@ print("====================================================")
 print("LASTMILE AI - REAL-TIME VEHICLE & ORDER SIMULATOR")
 print("====================================================")
 print("Simulating 5 fleet vehicles with dynamic order destinations...")
+time.sleep(3)  # Allow backend to bind to dynamic port
 
 start_time = time.time()
 iteration = 0
