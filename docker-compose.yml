@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: lastmile-backend
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - STREAMING_MODE=auto
+      - KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+    restart: unless-stopped
+
+  simulator:
+    build: .
+    container_name: lastmile-simulator
+    command: python simulator/vehicle_simulator.py
+    depends_on:
+      - backend
+    environment:
+      - BASE_URL=http://backend:8000
+    restart: unless-stopped
+
+  frontend:
+    build: .
+    container_name: lastmile-frontend
+    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    environment:
+      - API_URL=http://backend:8000
+    restart: unless-stopped
