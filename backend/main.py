@@ -828,9 +828,16 @@ init_streaming_handlers()
 
 @app.on_event("startup")
 def startup_event():
-    """Start Kafka streaming consumer and register topic handlers."""
+    """Start Kafka streaming consumer, register topic handlers, and launch simulator."""
     init_streaming_handlers()
     streaming_manager.start()
+
+    # Automatically launch background vehicle simulator thread
+    import threading
+    from simulator.vehicle_simulator import run_simulator_loop
+    sim_thread = threading.Thread(target=run_simulator_loop, daemon=True)
+    sim_thread.name = "BackgroundSimulatorWorker"
+    sim_thread.start()
 
 
 @app.on_event("shutdown")
